@@ -67,6 +67,34 @@ class SocialSharePlugin(private val registrar: Registrar):  MethodCallHandler {
               } else {
                   result.success("error")
               }
+      }
+      if (call.method == "shareInstagramStoryOnlyVideo") {
+          val backgroundImage: String? = call.argument("backgroundImage")
+          val backgroundTopColor: String? = call.argument("backgroundTopColor")
+          val backgroundBottomColor: String? = call.argument("backgroundBottomColor")
+          val attributionURL: String? = call.argument("attributionURL")
+
+          val intent = Intent("com.instagram.share.ADD_TO_STORY")
+          intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+          if (backgroundImage!=null) {
+              val backfile =  File(registrar.activeContext().cacheDir,backgroundImage)
+              val backgroundImageFile = FileProvider.getUriForFile(registrar.activeContext(), registrar.activeContext().applicationContext.packageName + ".com.shekarmudaliyar.social_share", backfile)
+              intent.setDataAndType(backgroundImageFile,"video/*")
+          }
+
+          intent.putExtra("content_url", attributionURL)
+          intent.putExtra("top_background_color", backgroundTopColor)
+          intent.putExtra("bottom_background_color", backgroundBottomColor)
+          Log.d("", registrar.activity().toString())
+          // Instantiate activity and verify it will resolve implicit intent
+          val activity: Activity = registrar.activity()
+          if (activity.packageManager.resolveActivity(intent, 0) != null) {
+              registrar.activeContext().startActivity(intent)
+              result.success("success")
+              } else {
+                  result.success("error")
+              }
       }else if(call.method == "shareFacebookStory"){
           //share on facebook story
           val stickerImage: String? = call.argument("stickerImage")
