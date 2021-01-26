@@ -92,6 +92,42 @@ class SocialShare {
     return response;
   }
 
+  static Future<String> shareInstagramStoryOnlyVideo(
+      String backgroundTopColor,
+      String backgroundBottomColor,
+      String attributionURL,
+      String videoPath) async {
+    Map<String, dynamic> args;
+    if (Platform.isIOS) {
+      args = <String, dynamic>{
+        "backgroundImage": videoPath,
+        "backgroundTopColor": backgroundTopColor,
+        "backgroundBottomColor": backgroundBottomColor,
+        "attributionURL": attributionURL
+      };
+    } else {
+      final tempDir = await getTemporaryDirectory();
+
+      File video = File(videoPath);
+      Uint8List videoBytes = video.readAsBytesSync();
+      String videoName = videoPath.split('/').last;
+      final newVideoPath = '${tempDir.path}/$videoName';
+      File backfile = await File(newVideoPath).create();
+      backfile.writeAsBytesSync(videoBytes);
+      args = <String, dynamic>{
+        "backgroundImage": videoName,
+        "backgroundTopColor": backgroundTopColor,
+        "backgroundBottomColor": backgroundBottomColor,
+        "attributionURL": attributionURL
+      };
+    }
+
+    final String response =
+        await _channel.invokeMethod('shareInstagramStoryOnlyVideo', args);
+
+    return response;
+  }
+
   static Future<String> shareFacebookStory(
       String imagePath,
       String backgroundTopColor,
@@ -228,6 +264,7 @@ class SocialShare {
     final Map apps = await _channel.invokeMethod('checkInstalledApps');
     return apps;
   }
+
   static Future<String> shareTelegram(String content) async {
     final Map<String, dynamic> args = <String, dynamic>{"content": content};
     final String version = await _channel.invokeMethod('shareTelegram', args);
