@@ -107,7 +107,7 @@
            }else {
                result(@"FILE DOES NOT EXISTS");
            }
-               NSArray *pasteboardItems = @[@{@"com.instagram.sharedSticker.backgroundImage" : imgBackgroundShare,
+               NSArray *pasteboardItems = @[@{@"com.instagram.sharedSticker.backgroundVideo" : imgBackgroundShare,
                                               @"com.instagram.sharedSticker.backgroundTopColor" : backgroundTopColor,
                                               @"com.instagram.sharedSticker.backgroundBottomColor" : backgroundBottomColor,
                                                          @"com.instagram.sharedSticker.contentURL" : attributionURL
