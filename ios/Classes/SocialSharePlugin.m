@@ -104,6 +104,8 @@
            UIImage *imgBackgroundShare;
            if (isFileExist) {
                imgBackgroundShare = [[UIImage alloc] initWithContentsOfFile:backgroundImage];
+           }else {
+               result(@"FILE DOES NOT EXISTS");
            }
                NSArray *pasteboardItems = @[@{@"com.instagram.sharedSticker.backgroundImage" : imgBackgroundShare,
                                               @"com.instagram.sharedSticker.backgroundTopColor" : backgroundTopColor,
