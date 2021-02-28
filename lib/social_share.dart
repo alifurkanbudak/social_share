@@ -44,44 +44,13 @@ class SocialShare {
   }
 
   static Future<String> shareInstagramStorywithBackground(
-      String imagePath,
-      String backgroundTopColor,
-      String backgroundBottomColor,
-      String attributionURL,
-      {String backgroundImagePath}) async {
+    String attributionURL,
+    String backgroundVideoPath,
+  ) async {
     Map<String, dynamic> args;
     if (Platform.isIOS) {
       args = <String, dynamic>{
-        "stickerImage": imagePath,
-        "backgroundImage": backgroundImagePath,
-        "backgroundTopColor": backgroundTopColor,
-        "backgroundBottomColor": backgroundBottomColor,
-        "attributionURL": attributionURL
-      };
-    } else {
-      final tempDir = await getTemporaryDirectory();
-
-      File file = File(imagePath);
-      Uint8List bytes = file.readAsBytesSync();
-      var stickerdata = bytes.buffer.asUint8List();
-      String stickerAssetName = 'stickerAsset.png';
-      final Uint8List stickerAssetAsList = stickerdata;
-      final stickerAssetPath = '${tempDir.path}/$stickerAssetName';
-      file = await File(stickerAssetPath).create();
-      file.writeAsBytesSync(stickerAssetAsList);
-
-      File backgroundimage = File(backgroundImagePath);
-      Uint8List backgroundimagedata = backgroundimage.readAsBytesSync();
-      String backgroundAssetName = 'backgroundAsset.jpg';
-      final Uint8List backgroundAssetAsList = backgroundimagedata;
-      final backgroundAssetPath = '${tempDir.path}/$backgroundAssetName';
-      File backfile = await File(backgroundAssetPath).create();
-      backfile.writeAsBytesSync(backgroundAssetAsList);
-      args = <String, dynamic>{
-        "stickerImage": stickerAssetName,
-        "backgroundImage": backgroundAssetName,
-        "backgroundTopColor": backgroundTopColor,
-        "backgroundBottomColor": backgroundBottomColor,
+        "backgroundVideo": backgroundVideoPath,
         "attributionURL": attributionURL
       };
     }
@@ -228,6 +197,7 @@ class SocialShare {
     final Map apps = await _channel.invokeMethod('checkInstalledApps');
     return apps;
   }
+
   static Future<String> shareTelegram(String content) async {
     final Map<String, dynamic> args = <String, dynamic>{"content": content};
     final String version = await _channel.invokeMethod('shareTelegram', args);
