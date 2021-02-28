@@ -18,7 +18,6 @@
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
     if([@"shareInstagramStory" isEqualToString:call.method]){
-   f([@"shareInstagramStory" isEqualToString:call.method]){
         printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         //Sharing story on instagram
       NSString *attributionURL = call.arguments[@"attributionURL"];
